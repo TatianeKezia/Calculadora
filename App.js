@@ -52,6 +52,7 @@ export default function App() {
         calculator();
         return;
       case '+/-':
+        setCurrentNumber((parseFloat(currentNumber) * -1).toString());
         return;
     }
 
