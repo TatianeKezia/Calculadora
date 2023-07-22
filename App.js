@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 export default function App() {
   // Mapeamento de teclas
-  const buttons = ['LIMPAR', 'DEL', '%', '/', 7, 8, 9, 'x', 6, 5, 4, '-', 3, 2, 1, '+', 0, '.', '+/-', '='];
+  const buttons = ['LIMPAR', 'DEL', '%', '/', 7, 8, 9, 'x', 4, 5, 6, '-', 1, 2, 3, '+', '+/-', 0, '.', '='];
 
   const [currentNumber, setCurrentNumber] = useState('');
   const [lastNumber, setLastNumber] = useState('');
@@ -62,7 +62,6 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-
       {/* Area onde o resultado é exibido */}
       <View style={styles.results}>
         <Text style={styles.historyText}>{lastNumber}</Text>
@@ -71,21 +70,23 @@ export default function App() {
 
       {/* Area onde os botões são exibidos*/}
       <View style={styles.buttons}>
-
         {buttons.map((button) =>
-          button === '=' ? // Mapeamento do botão =
+          button === '=' ? (     //Mapeamento do botão
             <TouchableOpacity onPress={() => handleInput(button)} key={button} style={[styles.button, { backgroundColor: '#3dd0e3' }]}>
-              <Text style={[styles.textButton, { color: "white", fontSize: 30 }]}>{button}</Text>
+              <Text style={[styles.textButton, { color: 'white', fontSize: 30 }]}>{button}</Text>
             </TouchableOpacity>
-            : // Mapeamento dos outros botões
+          ) : (
+            // Mapeamento dos outros botões
             <TouchableOpacity onPress={() => handleInput(button)} key={button} style={styles.button}>
-              <Text style={[styles.textButton, { color: typeof (button) === 'number' ? 'black' : '#0093a6' }]}>{button}</Text>
+              <Text style={[styles.textButton, { color: typeof button === 'number' ? 'black' : '#0093a6' }]}>{button}</Text>
             </TouchableOpacity>
+          )
         )}
       </View>
     </View>
   );
 }
+
 
 // Estilização
 const styles = StyleSheet.create({
