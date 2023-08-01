@@ -11,31 +11,52 @@ export default function App() {
 
   function calculator() {
     const splitNumbers = currentNumber.split(' ');
-    const fistNumber = parseFloat(splitNumbers[0]);
+    const firstNumber = parseFloat(splitNumbers[0]);
     const operator = splitNumbers[1];
     const lastNumber = parseFloat(splitNumbers[2]);
 
+    // Tratamento de casos para cálculo de porcentagem
+    if (currentNumber.includes('%')) {
+      if (operator === '+') {
+        return setCurrentNumber((firstNumber + (lastNumber / 100)).toString());
+      } else if (operator === '-') {
+        setCurrentNumber((firstNumber - (lastNumber / 100)).toString());
+      } else if (operator === 'x') {
+        setCurrentNumber((firstNumber * (lastNumber / 100)).toString());
+      } else if (operator === '/') {
+        setCurrentNumber((firstNumber / (lastNumber / 100)).toString());
+      } else {
+        setCurrentNumber('Operação inválida!');
+      }
+      setCurrentNumber((firstNumber / 100).toString());
+      return;
+    }
 
-    // Faz ação referente tecla pressionada
+    //Faz ação referente tecla pressionada
     switch (operator) {
       case '+':
-        setCurrentNumber((fistNumber + lastNumber).toString());
+        setCurrentNumber((firstNumber + lastNumber).toString());
         return;
       case '-':
-        setCurrentNumber((fistNumber - lastNumber).toString());
+        setCurrentNumber((firstNumber - lastNumber).toString());
         return;
       case 'x':
-        setCurrentNumber((fistNumber * lastNumber).toString());
+        setCurrentNumber((firstNumber * lastNumber).toString());
         return;
       case '/':
-        setCurrentNumber((fistNumber / lastNumber).toString());
-        return;
+        if (lastNumber === 0) {
+          setCurrentNumber('Erro: Divisão por zero');
+        } else {
+          setCurrentNumber((firstNumber / lastNumber).toString());
+        }
     }
+    return;
   }
+
 
   function handleInput(buttonPressed) {
     console.log(buttonPressed); // Mostra no Console a tecla pressionada
-    if (buttonPressed === '+' || buttonPressed === '-' || buttonPressed === 'x' || buttonPressed === '/') {
+    if (buttonPressed === '+' || buttonPressed === '-' || buttonPressed === 'x' || buttonPressed === '/' || buttonPressed === '%') {
       setCurrentNumber(currentNumber + ' ' + buttonPressed + ' ');
       return;
     }
@@ -55,10 +76,8 @@ export default function App() {
         setCurrentNumber((parseFloat(currentNumber) * -1).toString());
         return;
     }
-
     setCurrentNumber(currentNumber + buttonPressed);
   }
-
 
   return (
     <View style={styles.container}>
@@ -72,13 +91,19 @@ export default function App() {
       <View style={styles.buttons}>
         {buttons.map((button) =>
           button === '=' ? (     //Mapeamento do botão
-            <TouchableOpacity onPress={() => handleInput(button)} key={button} style={[styles.button, { backgroundColor: '#3dd0e3' }]}>
-              <Text style={[styles.textButton, { color: 'white', fontSize: 30 }]}>{button}</Text>
+            <TouchableOpacity
+              onPress={() => handleInput(button)}
+              key={button}
+              style={[styles.button, { backgroundColor: '#1E1240' }]}>
+              <Text style={styles.textButton}>{button}</Text>
             </TouchableOpacity>
           ) : (
             // Mapeamento dos outros botões
-            <TouchableOpacity onPress={() => handleInput(button)} key={button} style={styles.button}>
-              <Text style={[styles.textButton, { color: typeof button === 'number' ? 'black' : '#0093a6' }]}>{button}</Text>
+            <TouchableOpacity
+              onPress={() => handleInput(button)}
+              key={button}
+              style={styles.button}>
+              <Text style={[styles.textButton, { color: typeof button === 'number' ? '#FFFFFF' : '#644A7A' }]}>{button}</Text>
             </TouchableOpacity>
           )
         )}
@@ -96,17 +121,17 @@ const styles = StyleSheet.create({
   results: {
     flex: 2,
     justifyContent: 'center',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#1E1240',
   },
   resultText: {
-    color: '#282F38',
+    color: '#FFFFFF',
     fontSize: 32,
     fontWeight: 'bold',
     padding: 12,
     textAlign: 'right',
   },
   historyText: {
-    color: '#7c7c7c',
+    color: '#4E485E',
     fontSize: 20,
     marginRight: 10,
     alignSelf: 'flex-end',
@@ -116,15 +141,15 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   button: {
-    backgroundColor: 'white',
+    backgroundColor: "#420B75",
     alignItems: 'center',
     justifyContent: 'center',
     minWidth: 90,
-    minHeight: 90,
+    minHeight: 92,
     flex: 2,
   },
   textButton: {
-    color: '#7c7c7c',
+    color: '#644A7A',
     fontSize: 20,
   }
 });
